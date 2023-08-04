@@ -1,0 +1,31 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Profile page of {{ user.username }}</h1>
+<br /><br />
+<div>
+  <h2>Account Information</h2>
+  <ul>
+    <li>
+      <h3>Username</h3>
+      <p>{{user.username}}</p>
+    </li>
+    <li>
+      <h3>Email</h3>
+      <p>{{user.email}}</p>
+    </li>
+    <li>
+      <h3>Are you a tutor?</h3>
+      {% if user.is_tutor %}
+      <p>Yes</p>
+      {% else %}
+      <p>No</p>
+      {% endif %}
+    </li>
+    <li>
+      <h3>Wechat ID</h3>
+      <p>{{user.wechat_id}}</p>
+    </li>
+  </ul>
+</div>
+
+{% endblock %}

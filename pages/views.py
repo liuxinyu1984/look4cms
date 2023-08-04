@@ -7,6 +7,11 @@ def hello_world(request):
     return HttpResponse("Hello world from django!")
 
 
+# test base template
+
+def base(request):
+    return render(request, 'base.html', {})
+
 # index page
 def index(request):
     return render(request, 'index.html', {})

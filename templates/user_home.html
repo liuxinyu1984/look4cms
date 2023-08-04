@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Welcome back, {{ user.username }}</h1>
+
+<div>
+  <ul>
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="#">All Courses</a></li>
+    <li><a href="#">My Courses</a></li>
+    {% if user.is_tutor %}
+    <li><a href="#">My Tutoring Courses</a></li>
+    {% endif %}
+    <li><a href="{% url 'user_profile' %}">Profile</a></li>
+  </ul>
+</div>
+
+{% endblock %}
