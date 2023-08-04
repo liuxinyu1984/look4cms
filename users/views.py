@@ -5,21 +5,17 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def user_home(request):
-    contents = {
+    context = {
         'user': request.user
     }
-    return render(request, 'user_home.html', contents)
+    return render(request, 'user_home.html', context)
 
 @login_required
 def user_profile(request):
-    contents = {
+    context = {
         'user': request.user
     }
-    return render(request, 'user_profile.html', contents)
+    return render(request, 'user_profile.html', context)
 
 
-# class UserHome(View):
-#     def get(self, request):
-#         content = {
-#             'username': request.user.username
-#         }
+
