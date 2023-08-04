@@ -5,10 +5,10 @@
 <div>
   <ul>
     <li><a href="#">Dashboard</a></li>
-    <li><a href="#">All Courses</a></li>
-    <li><a href="#">My Courses</a></li>
+    <li><a href="#">Registration</a></li>
+    <li><a href="#">Learning</a></li>
     {% if user.is_tutor %}
-    <li><a href="#">My Tutoring Courses</a></li>
+    <li><a href="#">Tutoring</a></li>
     {% endif %}
     <li><a href="{% url 'user_profile' %}">Profile</a></li>
   </ul>
