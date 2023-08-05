@@ -4,7 +4,7 @@ from .models import MyUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import PasswordChangeView
 from .forms import SignUpForm
 from django.urls import reverse_lazy
 from django.forms.models import model_to_dict
@@ -15,14 +15,14 @@ def user_home(request):
     context = {
         'user': request.user
     }
-    return render(request, 'user_home.html', context)
+    return render(request, 'users/user_home.html', context)
 
 @login_required
 def user_profile(request):
     context = {
         'user': request.user
     }
-    return render(request, 'user_profile.html', context)
+    return render(request, 'users/user_profile.html', context)
 
 
 
@@ -34,7 +34,7 @@ class SignUpView(CreateView):
 class EditProfileView(LoginRequiredMixin, UpdateView):
     model = MyUser
     fields = ('username', 'email', 'wechat_id')
-    template_name = 'registration/edit_profile.html'
+    template_name = 'users/edit_profile.html'
     success_url = reverse_lazy('user_profile')
 
     def get_object(self):
@@ -53,3 +53,8 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
 #              return HttpResponseRedirect(reverse_lazy('user_profile'))
 #         else:
 #              return HttpResponse('Form not valid')
+
+
+class ChangePasswordView(PasswordChangeView):
+    template_name = 'users/change_password.html'
+    success_url = reverse_lazy('login')
