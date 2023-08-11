@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'pages',
     'users',
     'courses',
+    'tutors',
 ]
 
 MIDDLEWARE = [
