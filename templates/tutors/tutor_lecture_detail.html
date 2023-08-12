@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
 <h2>
-  Lecture detail page of {{ lecture.get_short_title }} in {{ lecture.course}}
+  Lecture detail page of {{ lecture.get_short_title }} in {{ lecture.course }}
 </h2>
 
 <div>
@@ -30,9 +30,16 @@
 <div>
   <h3>Edit/Delete the Lecture</h3>
   <ul>
-    <li><a href="#">Edit Lecture</a></li>
+    <li>
+      <a href="{% url 'tutor_update_lecture' lecture.id %}">Edit Lecture</a>
+    </li>
     <li><a href="#">Delete Lecture</a></li>
   </ul>
+</div>
+
+<div>
+  <h3>Back to Course Detail</h3>
+  <a href="{% url 'tutor_course_detail' lecture.course.id %}">Course Detail</a>
 </div>
 
 {% endblock %}

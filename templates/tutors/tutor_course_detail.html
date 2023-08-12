@@ -18,7 +18,7 @@
 <div>
   <h3>Lectures List</h3>
   <ul>
-    {% for lecture in course.lecture_set.all %}
+    {% for lecture in course.lecture_set.all|dictsort:"week" %}
     <li>
       Week {{ lecture.week }}: {{ lecture.title }}
       <a href="{% url 'tutor_lecture_detail' lecture.id %}">Go to Lecture</a>
@@ -29,7 +29,7 @@
 
 <div>
   <h3>Create a New Lecture</h3>
-  <a href="#">Create Lecture</a>
+  <a href="{% url 'tutor_create_lecture' course.id %}">Create Lecture</a>
 </div>
 
 <div>

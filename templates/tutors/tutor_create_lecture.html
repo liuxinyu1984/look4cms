@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Create a new lecture for course {{ lecture.course }}</h2>
+
+<div>
+  <form method="post">
+    {% csrf_token %} {{ form.as_p }}
+    <input type="submit" value="Create" />
+  </form>
+</div>
+
+<div>
+  <h3>Back to Course Detail</h3>
+  <a href="{% url 'tutor_course_detail' course.id %}">Course Detail</a>
+</div>
+
+{% endblock %}

@@ -173,4 +173,4 @@ class Lecture(models.Model):
         return str(self.course) + " Week" + str(self.week) + "---" + self.title
 
     def get_absolute_url(self):
-        return reverse('lecture_detail', args=[str(self.course.id), str(self.id)])
+        return reverse('tutor_lecture_detail', args=[str(self.id)])
