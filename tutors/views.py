@@ -38,3 +38,13 @@ class TutorLectureDetail(DetailView):
             return Lecture.objects.filter(pk=self.kwargs['lecture_id'])
         else:
             return Lecture.objects.none()
+        
+# # This also works
+# class TutorLectureDetail2(DetailView):
+#     model = Lecture
+#     pk_url_kwarg = 'lecture_id'
+#     template_name = 'tutors/tutor_lecture_detail.html'
+
+#     def get_queryset(self):
+#         courses = Course.objects.filter(tutor=self.request.user)
+#         return Lecture.objects.filter(course__in=courses)
