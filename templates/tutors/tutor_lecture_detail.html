@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>
+  Lecture detail page of {{ lecture.get_short_title }} in {{ lecture.course}}
+</h2>
+
+<div>
+  <h3>Lecture Information</h3>
+  <ul>
+    <li>Course: {{ lecture.course.get_long_title }}</li>
+    <li>Week: {{ lecture.week }}</li>
+    <li>Title: {{ lecture.title }}</li>
+    <li>Is this lecture a free sample lecture: {{ lecture.is_public }}</li>
+    <li>Is this lecture a midterm review lecture: {{ lecture.is_midterm }}</li>
+    <li>Is this lecture a final review lecture: {{ lecture.is_final }}</li>
+    <li>Syllabus: {{ lecture.syllabus }}</li>
+    <li>Created at: {{ lecture.created_at }}</li>
+    <li>Updated at: {{ lecture.updated_at }}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Upload Notes/Video</h3>
+  <ul>
+    <li><a href="#">Upload a New File</a></li>
+    <li><a href="#">Upload a New Video</a></li>
+  </ul>
+</div>
+
+<div>
+  <h3>Edit/Delete the Lecture</h3>
+  <ul>
+    <li><a href="#">Edit Lecture</a></li>
+    <li><a href="#">Delete Lecture</a></li>
+  </ul>
+</div>
+
+{% endblock %}

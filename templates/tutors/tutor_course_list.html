@@ -5,7 +5,10 @@
 <div>
   <ul>
     {% for course in course_list %}
-    <li>{{ course.get_long_title }}</li>
+    <li>
+      {{ course.get_long_title }}
+      <a href="{% url 'tutor_course_detail' course.id %}">View Course</a>
+    </li>
     {% endfor %}
   </ul>
 </div>

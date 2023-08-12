@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Course detail page of {{ course.get_short_title }}</h2>
+
+<div>
+  <h3>Course Information</h3>
+  <ul>
+    <li>Title: {{ course.get_long_title }}</li>
+    <li>Subject: {{ course.subject }}</li>
+    <li>Course number: {{ course.course_number }}</li>
+    <li>Section: {{ course.section }}</li>
+    <li>Term: {{ course.term }}</li>
+    <li>Tutor: {{ course.tutor }}</li>
+    <li>Activity Status: {{ course.is_active }}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Lectures List</h3>
+  <ul>
+    {% for lecture in course.lecture_set.all %}
+    <li>
+      Week {{ lecture.week }}: {{ lecture.title }}
+      <a href="{% url 'tutor_lecture_detail' lecture.id %}">Go to Lecture</a>
+    </li>
+    {% endfor%}
+  </ul>
+</div>
+
+<div>
+  <h3>Create a New Lecture</h3>
+  <a href="#">Create Lecture</a>
+</div>
+
+<div>
+  <h3>Back to my courses</h3>
+  <a href="{% url 'tutor_course_list' %}">All My Courses</a>
+</div>
+
+{% endblock %}
