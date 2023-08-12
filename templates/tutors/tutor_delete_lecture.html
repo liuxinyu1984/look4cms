@@ -1,0 +1,20 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Delete Lecture</h2>
+
+<div>
+  <form method="post">
+    {% csrf_token %}
+    <br />
+    <strong>Are you sure to delete {{ lecture.get_short_title }}</strong>
+    <br />
+    <input type="submit" value="Delete" />
+  </form>
+</div>
+
+<div>
+  <h3>Back to Lecture Detail</h3>
+  <a href="{% url 'tutor_lecture_detail' lecture.id %}">Lecture Detail</a>
+</div>
+
+{% endblock %}

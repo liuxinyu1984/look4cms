@@ -5,6 +5,7 @@ from django.shortcuts import render
 from courses.models import Course, Lecture
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import CreateLectureForm
+from django.urls import reverse_lazy
 
 
 
@@ -72,3 +73,13 @@ class TutorUpdateLecture(UpdateView):
     template_name = 'tutors/tutor_update_lecture.html'
     pk_url_kwarg = 'lecture_id'
     fields = ['title', 'week', 'syllabus', 'is_public', 'is_midterm', 'is_final']
+
+
+class TutorDeleteLecture(DeleteView):
+    model = Lecture
+    template_name = 'tutors/tutor_delete_lecture.html'
+    pk_url_kwarg = 'lecture_id'
+
+    def get_success_url(self):
+        return reverse_lazy('tutor_course_detail', kwargs={
+            'course_id': self.object.course.id})

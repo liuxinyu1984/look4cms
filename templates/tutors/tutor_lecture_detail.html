@@ -33,7 +33,9 @@
     <li>
       <a href="{% url 'tutor_update_lecture' lecture.id %}">Edit Lecture</a>
     </li>
-    <li><a href="#">Delete Lecture</a></li>
+    <li>
+      <a href="{% url 'tutor_delete_lecture' lecture.id %}">Delete Lecture</a>
+    </li>
   </ul>
 </div>
 
