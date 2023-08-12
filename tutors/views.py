@@ -6,10 +6,11 @@ from courses.models import Course, Lecture
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import CreateLectureForm
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
-class TutorCourseList(ListView):
+class TutorCourseList(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'tutors/tutor_course_list.html'
     ordering = ['term', 'course_number']
@@ -20,7 +21,7 @@ class TutorCourseList(ListView):
         return Course.objects.filter(tutor=self.request.user)
     
 
-class TutorCourseDetail(DetailView):
+class TutorCourseDetail(LoginRequiredMixin, DetailView):
     model = Course
     pk_url_kwarg = 'course_id'
     template_name = 'tutors/tutor_course_detail.html'
@@ -29,7 +30,7 @@ class TutorCourseDetail(DetailView):
         return Course.objects.filter(tutor=self.request.user)
         
 
-class TutorLectureDetail(DetailView):
+class TutorLectureDetail(LoginRequiredMixin, DetailView):
     model = Lecture
     pk_url_kwarg = 'lecture_id'
     template_name = 'tutors/tutor_lecture_detail.html'
@@ -52,7 +53,7 @@ class TutorLectureDetail(DetailView):
 #         return Lecture.objects.filter(course__in=courses)
 
 
-class TutorCreateLecture(CreateView):
+class TutorCreateLecture(LoginRequiredMixin, CreateView):
     model = Lecture
     template_name = 'tutors/tutor_create_lecture.html'
     form_class = CreateLectureForm
@@ -68,14 +69,14 @@ class TutorCreateLecture(CreateView):
     
 
 
-class TutorUpdateLecture(UpdateView):
+class TutorUpdateLecture(LoginRequiredMixin, UpdateView):
     model = Lecture
     template_name = 'tutors/tutor_update_lecture.html'
     pk_url_kwarg = 'lecture_id'
     fields = ['title', 'week', 'syllabus', 'is_public', 'is_midterm', 'is_final']
 
 
-class TutorDeleteLecture(DeleteView):
+class TutorDeleteLecture(LoginRequiredMixin, DeleteView):
     model = Lecture
     template_name = 'tutors/tutor_delete_lecture.html'
     pk_url_kwarg = 'lecture_id'
