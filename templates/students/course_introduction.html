@@ -10,6 +10,18 @@
     <li>Section: {{ course.section }}</li>
     <li>Term: {{ course.term }}</li>
     <li>Tutor: {{ course.tutor }}</li>
+    <li>Syllabus: {{ course.syllabus }}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Sample Lectures</h3>
+  <ul>
+    {% for lecture in course.lecture_set.all %} {% if lecture.is_public %}
+    <li>
+      <a href="#">{{ lecture }}</a>
+    </li>
+    {% else %} {% endif %} {% endfor %}
   </ul>
 </div>
 
