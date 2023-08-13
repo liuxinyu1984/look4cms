@@ -10,7 +10,7 @@
       <a href="{% url 'course_introduction' course.id %}"
         >Course Introduction</a
       >
-      <a href="#">Register Course</a>
+      <a href="{% url 'register_course' course.id %}">Register Course</a>
     </li>
     {% endfor %}
   </ul>

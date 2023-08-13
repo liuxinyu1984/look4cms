@@ -14,8 +14,11 @@
 </div>
 
 <div>
-  <h3>Back to Course List</h3>
-  <a href="{% url 'all_course_list' %}">All Courses List</a>
+  <h3>Links</h3>
+  <ul>
+    <li><a href="{% url 'register_course' course.id %}">Register Course</a></li>
+    <li><a href="{% url 'all_course_list' %}">All Courses List</a></li>
+  </ul>
 </div>
 
 {% endblock %}

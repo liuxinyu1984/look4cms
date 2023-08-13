@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Enrollments
+from .models import Enrollment
 
 class EnrollmentAdmin(admin.ModelAdmin):
     list_display = ('course', 'student', 'activated', 'dropped')
@@ -8,4 +8,4 @@ class EnrollmentAdmin(admin.ModelAdmin):
     search_fields = ['course', 'student__wechat_id']
     ordering = ['course', 'created_at']
 
-admin.site.register(Enrollments, EnrollmentAdmin)
+admin.site.register(Enrollment, EnrollmentAdmin)

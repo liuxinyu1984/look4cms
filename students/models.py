@@ -1,8 +1,9 @@
 from django.db import models
 from users.models import MyUser
 from courses.models import Course
+from django.urls import reverse
 
-class Enrollments(models.Model):
+class Enrollment(models.Model):
     student = models.ForeignKey(
         MyUser,
         models.SET_NULL,
@@ -32,3 +33,7 @@ class Enrollments(models.Model):
 
     def __str__(self):
         return str(self.course) + " by " + str(self.student)
+    
+    def get_absolute_url(self):
+        return reverse("course_introduction", args=[int(self.course.id)])
+    
