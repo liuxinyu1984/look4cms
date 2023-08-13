@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Course Information of {{ course.get_long_title }}</h2>
+
+<div>
+  <ul>
+    <li>Title: {{ course.get_long_title }}</li>
+    <li>Subject: {{ course.subject }}</li>
+    <li>Course number: {{ course.course_number }}</li>
+    <li>Section: {{ course.section }}</li>
+    <li>Term: {{ course.term }}</li>
+    <li>Tutor: {{ course.tutor }}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Back to Course List</h3>
+  <a href="{% url 'all_course_list' %}">All Courses List</a>
+</div>
+
+{% endblock %}
