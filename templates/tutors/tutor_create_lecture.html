@@ -3,10 +3,14 @@
 <h2>Create a new lecture for course {{ lecture.course }}</h2>
 
 <div>
+  {% if tutor_is_instructor %}
   <form method="post">
     {% csrf_token %} {{ form.as_p }}
     <input type="submit" value="Create" />
   </form>
+  {% else %}
+  <strong>You are not instructor of this course</strong>
+  {% endif %}
 </div>
 
 <div>

@@ -62,6 +62,8 @@ class TutorCreateLecture(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         course = Course.objects.get(pk=self.kwargs['course_id'])
         context['course'] = course
+        user_is_instructor = (course.tutor == self.request.user)
+        context['user_is_instructor'] = user_is_instructor
         return context
 
     def get_initial(self):
@@ -75,11 +77,25 @@ class TutorUpdateLecture(LoginRequiredMixin, UpdateView):
     pk_url_kwarg = 'lecture_id'
     fields = ['title', 'week', 'syllabus', 'is_public', 'is_midterm', 'is_final']
 
+    def get_queryset(self):
+        lecture = Lecture.objects.get(pk=self.kwargs['lecture_id'])
+        if lecture.course.tutor == self.request.user:
+            return Lecture.objects.filter(pk=self.kwargs['lecture_id'])
+        else:
+            return Lecture.objects.none()
+
 
 class TutorDeleteLecture(LoginRequiredMixin, DeleteView):
     model = Lecture
     template_name = 'tutors/tutor_delete_lecture.html'
     pk_url_kwarg = 'lecture_id'
+
+    def get_queryset(self):
+        lecture = Lecture.objects.get(pk=self.kwargs['lecture_id'])
+        if lecture.course.tutor == self.request.user:
+            return Lecture.objects.filter(pk=self.kwargs['lecture_id'])
+        else:
+            return Lecture.objects.none()
 
     def get_success_url(self):
         return reverse_lazy('tutor_course_detail', kwargs={
