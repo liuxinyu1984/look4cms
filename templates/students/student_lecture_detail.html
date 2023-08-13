@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Lecture Page for {{lecture}}</h2>
+
+<div>
+  <h3>Lecture Information</h3>
+  <ul>
+    <li>Course: {{lecture.course}}</li>
+    <li>Title: {{lecture.title}}</li>
+    <li>Week: {{lecture.week}}</li>
+    <li>Syllabus: {{lecture.syllabus}}</li>
+    <li>Midterm Review: {{lecture.is_midterm}}</li>
+    <li>Final Review: {{lecture.is_final}}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Links</h3>
+  <ul>
+    <li>
+      <a href="{% url 'student_course_detail' enrollment.id %}"
+        >Back to Course Page</a
+      >
+    </li>
+    <li><a href="{% url 'student_course_list' %}">Back to My Courses</a></li>
+  </ul>
+</div>
+
+{% endblock %}

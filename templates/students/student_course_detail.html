@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Course Page for {{ enrollment.course }}</h2>
+
+<div>
+  <h3>Course Information</h3>
+  <ul>
+    <li>Title: {{enrollment.course.get_short_title}}</li>
+    <li>Tutor: {{enrollment.course.tutor}}</li>
+    <li>Activated: {{enrollment.activated}}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Lectures of the course</h3>
+  <ul>
+    {% for lecture in enrollment.course.lecture_set.all|dictsort:"week" %}
+    <li>
+      {{ lecture }}
+      <a href="{% url 'student_lecture_detail' enrollment.id lecture.id %}"
+        >Go to Lecture</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div>
+  <h3>Links</h3>
+  <ul>
+    <li><a href="{% url 'student_course_list' %}">Back to My Courses</a></li>
+  </ul>
+</div>
+
+{% endblock %}
