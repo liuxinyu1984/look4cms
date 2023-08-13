@@ -69,3 +69,11 @@ class StudentLectureDetail(LoginRequiredMixin, DetailView):
         if self.object.activated:
             context['lecture'] = Lecture.objects.get(pk=self.kwargs['lecture_id'])
         return context
+    
+class PublicLecture(LoginRequiredMixin, DetailView):
+    model = Lecture
+    template_name = 'students/public_lecture.html'
+    pk_url_kwarg = 'lecture_id'
+
+    def get_queryset(self):
+        return Lecture.objects.filter(is_public=True)

@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>Public Lecture {{lecture}}</h2>
+
+<div>
+  <h3>Lecture Information</h3>
+  <ul>
+    <li>Course: {{lecture.course}}</li>
+    <li>Title: {{lecture.title}}</li>
+    <li>Week: {{lecture.week}}</li>
+    <li>Syllabus: {{lecture.syllabus}}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Links</h3>
+  <ul>
+    <li>
+      <a href="{% url 'course_introduction' lecture.course.id %}"
+        >Course Introduction</a
+      >
+    </li>
+    <li><a href="{% url 'all_course_list' %}">All Courses</a></li>
+  </ul>
+</div>
+
+{% endblock %}

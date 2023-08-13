@@ -19,7 +19,7 @@
   <ul>
     {% for lecture in course.lecture_set.all %} {% if lecture.is_public %}
     <li>
-      <a href="#">{{ lecture }}</a>
+      <a href="{% url 'public_lecture' lecture.id %}">{{ lecture }}</a>
     </li>
     {% else %} {% endif %} {% endfor %}
   </ul>
