@@ -1,0 +1,35 @@
+{% extends 'base.html' %} {% load embed_video_tags %} {% block content %}
+
+<h2>Displaying Test Video</h2>
+<br />
+<br />
+
+<div>
+  <h2>Test django-embed-video</h2>
+  {% for item in videos %} {% video item.video 'medium' %} {% endfor %}
+</div>
+
+<div>
+  <h3>Green and Stokes Test</h3>
+  <iframe
+    src="https://player.vimeo.com/video/855867972"
+    width="640"
+    height="564"
+    frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+</div>
+
+<div>
+  <h3>Apartment</h3>
+  <iframe
+    src="https://player.vimeo.com/video/855259792"
+    width="640"
+    height="564"
+    frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+</div>
+{% endblock %}

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'courses',
     'tutors',
     'students',
+    'embed_video',
+    'embeds',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +140,15 @@ AUTH_USER_MODEL = 'users.MyUser'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'user_home'
 LOGOUT_REDIRECT_URL = 'index'
+
+
+
+# django_embed_video settings
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+EMBED_VIDEO_BACKENDS = (
+    'embed_video.backends.YoutubeBackend',
+    'embed_video.backends.VimeoBackend',
+    'embed_video.backends.SoundCloudBackend',
+    'my_app.backends.CustomBackend',
+)
