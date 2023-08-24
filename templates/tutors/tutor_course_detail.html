@@ -1,7 +1,15 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Course detail page of {{ course.get_short_title }}</h2>
-
+<h2>{{ message }}</h2>
+{% if not user.is_tutor %}
+<div>
+  <a href="{% url 'user_home' %}">Go back to homepage.</a>
+</div>
+{% elif not is_instructor %}
+<div>
+  <a href="{% url 'tutor_course_list' %}">Go back to course list.</a>
+</div>
+{% else %}
 <div>
   <h3>Course Information</h3>
   <ul>
@@ -23,7 +31,7 @@
       Week {{ lecture.week }}: {{ lecture.title }}
       <a href="{% url 'tutor_lecture_detail' lecture.id %}">Go to Lecture</a>
     </li>
-    {% endfor%}
+    {% endfor %}
   </ul>
 </div>
 
@@ -36,5 +44,4 @@
   <h3>Back to my courses</h3>
   <a href="{% url 'tutor_course_list' %}">All My Courses</a>
 </div>
-
-{% endblock %}
+{% endif %} {% endblock %}

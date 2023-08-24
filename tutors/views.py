@@ -7,9 +7,24 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .forms import CreateLectureForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 
+#############################################
+# define the tutor_required decorator
+user_login_required = user_passes_test(lambda user: user.is_tutor, login_url='/')
+
+def tutor_required(view_func):
+    decorated_view_func = login_required(user_login_required(view_func))
+    return decorated_view_func
+
+
+#################################################
+# tutor course list view
+#################################################
+
+# CBV
 class TutorCourseList(LoginRequiredMixin, ListView):
     model = Course
     template_name = 'tutors/tutor_course_list.html'
@@ -19,8 +34,36 @@ class TutorCourseList(LoginRequiredMixin, ListView):
         #print(self.request.__dict__)
         #print(self.request.GET)
         return Course.objects.filter(tutor=self.request.user)
-    
 
+# FBV
+@login_required
+def tutor_course_list(request):
+    template = 'tutors/tutor_course_list.html'
+    if request.user.is_tutor == False:
+        message = 'Warning: You Are Not a Tutor!'
+        context = {
+            "message": message
+        }
+    else:
+        courses = Course.objects.filter(tutor=request.user).order_by('term', 'course_number')
+        if not courses:
+            message = "You currently have no course on teaching."
+        else:
+            message = f"All courses taught by {request.user}"
+
+        context = {
+            "message": message,
+            "courses": courses
+        }
+    return render(request, template, context)
+    
+    
+    
+#################################################
+# tutor course detail view
+#################################################
+
+# CBV
 class TutorCourseDetail(LoginRequiredMixin, DetailView):
     model = Course
     pk_url_kwarg = 'course_id'
@@ -28,8 +71,35 @@ class TutorCourseDetail(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         return Course.objects.filter(tutor=self.request.user)
-        
+    
+# FBV
+@login_required
+def tutor_course_detail(request, course_id):
+    template = 'tutors/tutor_course_detail.html'
+    course = Course.objects.get(pk=course_id)
+    is_instructor = False
 
+    if not request.user.is_tutor:
+        message = 'Warning: You Are Not A Tutor!'
+    elif course.tutor != request.user:
+        message = "Warning: You are NOT the instructor of this course!"
+    else:
+        is_instructor = True
+        message = f"Course homepage of {course} for instructor {request.user}"
+
+    context = {
+        "is_instructor": is_instructor,
+        "message": message,
+        "course": course
+    }
+    return render(request, template, context)
+    
+        
+#################################################
+# tutor lecture detail view
+#################################################
+
+# CBV
 class TutorLectureDetail(LoginRequiredMixin, DetailView):
     model = Lecture
     pk_url_kwarg = 'lecture_id'
@@ -52,6 +122,27 @@ class TutorLectureDetail(LoginRequiredMixin, DetailView):
 #         courses = Course.objects.filter(tutor=self.request.user)
 #         return Lecture.objects.filter(course__in=courses)
 
+
+# FBV
+@tutor_required
+def tutor_lecture_detail(request, lecture_id):
+
+    template = 'tutors/tutor_lecture_detail.html'
+    lecture = Lecture.objects.get(pk=lecture_id)
+    
+    if request.user != lecture.course.tutor:
+        is_instructor = False
+        message = "Warning: You are not the instructor of this course!"
+    else:
+        is_instructor = True
+        message = f"Lecture Detail Page of {lecture}"
+
+    context = {
+        "message": message,
+        "is_instructor": is_instructor,
+        "lecture": lecture
+    }
+    return render(request, template, context)
 
 class TutorCreateLecture(LoginRequiredMixin, CreateView):
     model = Lecture

@@ -1,18 +1,16 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>
-  Lecture detail page of {{ lecture.get_short_title }} in {{ lecture.course }}
-</h2>
-
+<h2>{{ message }}</h2>
+{% if is_instructor %}
 <div>
   <h3>Lecture Information</h3>
   <ul>
     <li>Course: {{ lecture.course.get_long_title }}</li>
     <li>Week: {{ lecture.week }}</li>
     <li>Title: {{ lecture.title }}</li>
-    <li>Is this lecture a free sample lecture: {{ lecture.is_public }}</li>
-    <li>Is this lecture a midterm review lecture: {{ lecture.is_midterm }}</li>
-    <li>Is this lecture a final review lecture: {{ lecture.is_final }}</li>
+    <li>Free sample lecture: {{ lecture.is_public }}</li>
+    <li>Midterm review: {{ lecture.is_midterm }}</li>
+    <li>Final review: {{ lecture.is_final }}</li>
     <li>Syllabus: {{ lecture.syllabus }}</li>
     <li>Created at: {{ lecture.created_at }}</li>
     <li>Updated at: {{ lecture.updated_at }}</li>
@@ -43,5 +41,8 @@
   <h3>Back to Course Detail</h3>
   <a href="{% url 'tutor_course_detail' lecture.course.id %}">Course Detail</a>
 </div>
-
-{% endblock %}
+{% else %}
+<div>
+  <a href="{% url 'tutor_course_list' %}">Go Back to My Courses</a>
+</div>
+{% endif %} {% endblock %}
