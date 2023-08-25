@@ -1,21 +1,21 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Create a new lecture for course {{ lecture.course }}</h2>
+<h2>{{ message }}</h2>
 
-<div>
-  {% if tutor_is_instructor %}
-  <form method="post">
-    {% csrf_token %} {{ form.as_p }}
-    <input type="submit" value="Create" />
+{% if is_instructor %}
+<div class="form-group col-6">
+  <form method="post" class="form">
+    {% csrf_token %} {{ form.as_p}}
+    <input class="btn btn-primary" type="submit" value="Create Lecture" />
   </form>
-  {% else %}
-  <strong>You are not instructor of this course</strong>
-  {% endif %}
 </div>
 
 <div>
   <h3>Back to Course Detail</h3>
   <a href="{% url 'tutor_course_detail' course.id %}">Course Detail</a>
 </div>
-
-{% endblock %}
+{% else %}
+<div>
+  <a href="{% url 'tutor_course_list' %}">Go to my courses</a>
+</div>
+{% endif %} {% endblock %}

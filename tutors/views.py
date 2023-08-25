@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from django.db import models
 from django.db.models.query import QuerySet
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from courses.models import Course, Lecture
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import CreateLectureForm
@@ -144,6 +144,13 @@ def tutor_lecture_detail(request, lecture_id):
     }
     return render(request, template, context)
 
+
+
+#################################################
+# tutor lecture create view
+#################################################
+
+# CBV
 class TutorCreateLecture(LoginRequiredMixin, CreateView):
     model = Lecture
     template_name = 'tutors/tutor_create_lecture.html'
@@ -160,6 +167,42 @@ class TutorCreateLecture(LoginRequiredMixin, CreateView):
     def get_initial(self):
         return {'course': Course.objects.get(id=self.kwargs['course_id'])}
     
+
+# FBV
+@tutor_required
+def tutor_create_lecture(request, course_id):
+
+    course = Course.objects.get(pk=course_id)
+    template = 'tutors/tutor_create_lecture.html'
+
+    if course.tutor != request.user:
+        is_instructor = False
+        message = "Warning: You are NOT instructor of this course!"
+        return render(request, template, {"is_instructor": is_instructor, "message": message})
+    else:
+        is_instructor = True
+        message = f"Create a new lecture for the course {course}"
+        form = CreateLectureForm(request.POST or None, initial={"course": course})
+
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+                return redirect ('tutor_course_detail', course.pk)
+
+        context = {
+            "course": course,
+            "is_instructor": is_instructor,
+            "message": message,
+            "form": form
+        }
+        return render(request, template, context)
+
+
+
+
+
+
+
 
 
 class TutorUpdateLecture(LoginRequiredMixin, UpdateView):
