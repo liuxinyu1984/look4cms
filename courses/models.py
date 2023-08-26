@@ -142,16 +142,17 @@ class Lecture(models.Model):
     is_midterm = models.BooleanField(
         default=False,
         help_text="Is this a midterm review lecture? (是否为期中冲刺)",
-        verbose_name='Midterm Review?'
+        verbose_name='Midterm Review'
     )
     is_final = models.BooleanField(
         default=False,
         help_text="Is this a final review lecture? (是否为期末冲刺)",
-        verbose_name="Final Review?"
+        verbose_name="Final Review"
     )
     is_public = models.BooleanField(
         default=False,
-        help_text="Is this a free sample lecture? (是否为试听课)"
+        help_text="Is this a free sample lecture? (是否为试听课)",
+        verbose_name="Free Sample"
     )
     created_at = models.DateTimeField(
         auto_now_add=True,

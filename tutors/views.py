@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from django.db import models
 from django.db.models.query import QuerySet
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from courses.models import Course, Lecture
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .forms import CreateLectureForm
@@ -172,7 +172,7 @@ class TutorCreateLecture(LoginRequiredMixin, CreateView):
 @tutor_required
 def tutor_create_lecture(request, course_id):
 
-    course = Course.objects.get(pk=course_id)
+    course = get_object_or_404(Course, pk=course_id)
     template = 'tutors/tutor_create_lecture.html'
 
     if course.tutor != request.user:
@@ -202,9 +202,11 @@ def tutor_create_lecture(request, course_id):
 
 
 
+#################################################
+# tutor lecture update view
+#################################################
 
-
-
+# CBV
 class TutorUpdateLecture(LoginRequiredMixin, UpdateView):
     model = Lecture
     template_name = 'tutors/tutor_update_lecture.html'
@@ -219,6 +221,46 @@ class TutorUpdateLecture(LoginRequiredMixin, UpdateView):
             return Lecture.objects.none()
 
 
+# FBV
+
+@tutor_required
+def tutor_update_lecture(request, lecture_id):
+
+    lecture = get_object_or_404(Lecture, pk=lecture_id)
+    template = 'tutors/tutor_update_lecture.html'
+
+    if lecture.course.tutor != request.user:
+        is_instructor = False
+        message = "Warning: You are NOT instructor of this course!"
+        return render(request, template, {"is_instructor": is_instructor, "message": message})
+    else:
+        form = CreateLectureForm(instance=lecture)
+        is_instructor = True
+        message = f"Update the lecture {lecture}."
+
+        if request.method == "POST":
+            form = CreateLectureForm(request.POST, instance = lecture)
+            if form.is_valid():
+                form.save()
+                return redirect('tutor_lecture_detail', lecture.id)
+        
+        context = {
+            "lecture": lecture,
+            "is_instructor": is_instructor,
+            "message": message,
+            "form": form
+        }
+        return render(request, template, context)
+        
+
+
+
+
+#################################################
+# tutor lecture delete view
+#################################################
+
+# CBV
 class TutorDeleteLecture(LoginRequiredMixin, DeleteView):
     model = Lecture
     template_name = 'tutors/tutor_delete_lecture.html'
@@ -234,3 +276,29 @@ class TutorDeleteLecture(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('tutor_course_detail', kwargs={
             'course_id': self.object.course.id})
+    
+# FBV
+
+def tutor_delete_lecture(request, lecture_id):
+
+    lecture = get_object_or_404(Lecture, pk=lecture_id)
+    template = 'tutors/tutor_delete_lecture.html'
+
+    if lecture.course.tutor != request.user:
+        is_instructor = False
+        message = "Warning: You are NOT instructor of this course!"
+        return render(request, template, {"is_instructor": is_instructor, "message": message})
+    else:
+        is_instructor = True
+        message = f"Delete the lecture {lecture}."
+
+        if request.method == "POST":
+            lecture.delete()
+            return redirect('tutor_course_detail', lecture.course.id)
+        
+        context = {
+            "lecture": lecture,
+            "is_instructor": is_instructor,
+            "message": message
+        }
+        return render(request, template, context)
