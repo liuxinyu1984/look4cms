@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'students',
     'embed_video',
     'embeds',
+    'videos',
 ]
 
 MIDDLEWARE = [

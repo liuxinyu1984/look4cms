@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% load embed_video_tags %} {% block content %}
+
+<h2>Displaying Test Video</h2>
+
+<div>
+  <h3>Video Information</h3>
+  <ul>
+    <li>URI:{{uri}}</li>
+    <li>Name:{{name}}</li>
+    <li>Link:{{link}}</li>
+    <li>Duration (in seconds):{{duration}}</li>
+    <li>x-ratelimit-limit:{{x_ratelimit_limit}}</li>
+    <li>x-ratelimit-remaining:{{x_ratelimit_remaining}}</li>
+  </ul>
+</div>
+
+<div>
+  <h3>Display Video</h3>
+  {{html|safe}}
+  <iframe
+    src="https://player.vimeo.com/video/{{video_id}}?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=275945"
+    width="720"
+    height="1280"
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    title="Untitled"
+  ></iframe>
+</div>
+
+{% endblock %}
