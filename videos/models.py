@@ -6,7 +6,8 @@ class VimeoVideo(models.Model):
     video_id = models.CharField(
         max_length=200,
         verbose_name='Video ID',
-        help_text='video id used on Vimeo'
+        help_text='video id used on Vimeo',
+        null=True,
     )
     uploader = models.ForeignKey(
         MyUser,
