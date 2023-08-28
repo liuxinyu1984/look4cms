@@ -3,10 +3,10 @@ from users.models import MyUser
 from courses.models import Lecture
 
 class VimeoVideo(models.Model):
-    video_id = models.CharField(
+    uri = models.CharField(
         max_length=200,
-        verbose_name='Video ID',
-        help_text='video id used on Vimeo',
+        verbose_name='Video URI',
+        help_text='"/videos/xxxxxxxxx" from address bar of video',
         null=True,
     )
     uploader = models.ForeignKey(

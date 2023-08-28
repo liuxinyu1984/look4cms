@@ -6,7 +6,7 @@ class CreateVimeoVideoForm(forms.ModelForm):
 
     class Meta:
         model = VimeoVideo
-        fields = ['title', 'uploader', 'lecture','video_id']
+        fields = ['title', 'uploader', 'lecture','uri']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}), 
         }
@@ -15,7 +15,7 @@ class CreateVimeoVideoForm(forms.ModelForm):
         super(CreateVimeoVideoForm, self).__init__(*args, **kwargs)
         self.fields['uploader'].disabled = True
         self.fields['lecture'].disabled = True
-        self.fields['video_id'].disabled = True
+        self.fields['uri'].disabled = True
 
 
 class VideoFilePathForm(forms.Form):

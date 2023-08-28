@@ -8,7 +8,7 @@ from .forms import CreateVimeoVideoForm, VideoFilePathForm
 
 def display_single_video(request):
 
-    video = VimeoVideo.objects.get(pk=2)
+    video = VimeoVideo.objects.get(pk=6)
 
     client = vimeo.VimeoClient(
         token=personal_access_token,
@@ -16,7 +16,7 @@ def display_single_video(request):
         secret=client_secret
     )
 
-    uri = 'https://api.vimeo.com/videos/' + video.video_id
+    uri =  video.uri
 
     response = client.get(uri)
     response_json = response.json()
@@ -33,7 +33,6 @@ def display_single_video(request):
     template = 'videos/display_single_video.html'
 
     context = {
-        'video_id': video.video_id,
         'uri': uri,
         'name': name,
         'link': link,
@@ -72,7 +71,7 @@ def upload_video(request):
                     'name': name
                 }
             )
-            video_id = uri[-9:]
+            
 
             response = client.get(uri + '?fields=transcode.status').json()
             if response['transcode']['status'] == 'error':
@@ -81,7 +80,7 @@ def upload_video(request):
             else:
                 message = 'Upload Successful! Your video is being transcoded.'
                 vimeo_video = VimeoVideo(
-                    video_id=video_id,
+                    uri=uri,
                     uploader = uploader,
                     lecture = lecture,
                     title = name
