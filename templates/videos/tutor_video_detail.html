@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% load embed_video_tags %} {% block content %}
+
+<h2>{{message}}</h2>
+{% if is_instructor %}
+
+<div>
+  <h3>Display by player_embed_url</h3>
+  {{player_embed_url}}
+  <div style="padding: 75% 0 0 0; position: relative">
+    <iframe
+      src="{{player_embed_url}}"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+      title="Untitled"
+    ></iframe>
+  </div>
+</div>
+
+<div>
+  <h3>Links</h3>
+  <a href="{% url 'tutor_lecture_detail' video.lecture.id %}"
+    >Go back to lecture detail page</a
+  >
+</div>
+{% else %} {% endif %} {% endblock %}

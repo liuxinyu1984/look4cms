@@ -5,6 +5,7 @@ from .vimeo_key import *
 from users.models import MyUser
 from courses.models import Lecture
 from .forms import CreateVimeoVideoForm, VideoFilePathForm
+from tutors.views import tutor_required
 
 def display_single_video(request):
 
@@ -92,4 +93,54 @@ def upload_video(request):
     context = {
         "form": video_form
     }
+    return render(request, template, context)
+
+
+
+
+
+#######################################################################################
+#########    views
+#######################################################################################
+
+
+@tutor_required
+def tutor_video_detail(request, video_id):
+
+    template = 'videos/tutor_video_detail.html'
+    is_instructor = False
+    video = VimeoVideo.objects.get(pk=video_id)
+
+    if request.user != video.lecture.course.tutor:
+        message = 'You cannot watch this video. (Not the tutor of this course)'
+    else:
+        is_instructor = True
+        message = f'Detail of video: {video}'
+
+    # fetch video uri from Vimeo
+    client = vimeo.VimeoClient(
+        token=personal_access_token,
+        key=client_identifier,
+        secret=client_secret
+    )
+
+    uri =  video.uri
+
+    response = client.get(uri)
+    response_json = response.json()
+
+    # uri = response_json["uri"]
+    # name = response_json["name"]
+    # link = response_json["link"]
+    html = response_json['embed']["html"]
+
+    context = {
+        "video": video,
+        "is_instructor": is_instructor,
+        "message": message,
+        "uri": uri,
+        "html": html,
+        "player_embed_url": response_json["player_embed_url"]
+    }
+
     return render(request, template, context)

@@ -18,15 +18,26 @@
 </div>
 
 <div>
-  <h3>Upload Notes/Video</h3>
+  <h3>Videos</h3>
   <ul>
-    <li><a href="#">Upload a New File</a></li>
-    <li><a href="#">Upload a New Video</a></li>
+    {% for video in lecture.vimeovideo_set.all %}
+    <li>
+      <a href="{% url 'tutor_video_detail' video.id %}">{{video.title}}</a>
+    </li>
+    {% endfor %}
   </ul>
+  <h4>Manage Videos</h4>
+  <p><a href="#">Upload a New Video</a></p>
 </div>
 
 <div>
-  <h3>Edit/Delete the Lecture</h3>
+  <h3>Notes</h3>
+  <h4>Manage Notes</h4>
+  <p><a href="#">Upload a New Notes</a></p>
+</div>
+
+<div>
+  <h3>Manage Lecture</h3>
   <ul>
     <li>
       <a href="{% url 'tutor_update_lecture' lecture.id %}">Edit Lecture</a>
