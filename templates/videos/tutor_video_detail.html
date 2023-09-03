@@ -18,6 +18,11 @@
 </div>
 
 <div>
+  <h2>Manage Video</h2>
+  <a href="{% url 'tutor_delete_video' video.id %}">Delete this video</a>
+</div>
+
+<div>
   <h3>Links</h3>
   <a href="{% url 'tutor_lecture_detail' video.lecture.id %}"
     >Go back to lecture detail page</a
