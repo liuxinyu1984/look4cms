@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>{{message}}</h2>
+{% if is_right_student %}
+<div>
+  <h3>{{video.title}}</h3>
+</div>
+
+<div>
+  <h3>Display by player_embed_url</h3>
+  {{player_embed_url}}
+  <div style="padding: 75% 0 0 0; position: relative">
+    <iframe
+      src="{{player_embed_url}}"
+      frameborder="0"
+      allow="autoplay; fullscreen; picture-in-picture"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+      title="Untitled"
+    ></iframe>
+  </div>
+</div>
+
+<div>
+  <h3>Links</h3>
+  <ul>
+    <li>
+      <a href="{% url 'student_lecture_detail' enrollment_id lecture_id %}"
+        >Back to Lecture Detail</a
+      >
+    </li>
+    <li>
+      <a href="{% url 'student_course_detail' enrollment_id %}"
+        >Back to Course Page</a
+      >
+    </li>
+    <li><a href="{% url 'student_course_list' %}">Back to My Courses</a></li>
+  </ul>
+</div>
+
+{% else %} {% endif %} {% endblock %}

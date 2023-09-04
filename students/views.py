@@ -3,12 +3,15 @@ from django.db import models
 from django.shortcuts import render
 from courses.models import Course, Lecture
 from .models import Enrollment
+from videos.models import VimeoVideo
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CreateEnrollmentForm
 from django.contrib.auth.decorators import login_required
+import vimeo, requests, json
+from videos.vimeo_key import *
 
 class AllCourseList(LoginRequiredMixin, ListView):
     model = Course
@@ -118,6 +121,7 @@ def student_lecture_detail(request, enrollment_id, lecture_id):
     else:
         is_right_student = True
         message = f"Lecture detail page of {lecture}"
+        
 
     context = {
         "is_right_student": is_right_student,
@@ -147,4 +151,32 @@ class PublicLecture(LoginRequiredMixin, DetailView):
 @login_required
 def student_video_detail(request,enrollment_id, video_id):
 
+    template = 'students/student_video_detail.html'
     enrollment = Enrollment.objects.get(pk=enrollment_id)
+    video = VimeoVideo.objects.get(pk=video_id)
+
+    if request.user != enrollment.student:
+        is_right_student = False
+        message = "Warning: You are not permitted to view this page!"
+    else:
+        is_right_student = True
+        message = f"Video page of {video}"
+
+    client = vimeo.VimeoClient(
+        token=personal_access_token,
+        key=client_identifier,
+        secret=client_secret
+    )
+
+    uri =  video.uri
+
+    response = client.get(uri)
+    response_json = response.json()
+    context = {
+        "is_right_student": is_right_student,
+        "message": message,
+        "lecture_id": video.lecture.id,
+        "enrollment_id": enrollment.id,
+        "player_embed_url": response_json["player_embed_url"]
+    }
+    return render(request, template, context)

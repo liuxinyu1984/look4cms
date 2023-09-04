@@ -19,7 +19,9 @@
   <ul>
     {% for video in lecture.vimeovideo_set.all %}
     <li>
-      <a href="#">{{video.title}}</a>
+      <a href="{% url 'student_video_detail' enrollment_id video.id %}"
+        >{{video.title}}</a
+      >
     </li>
     {% endfor %}
   </ul>
