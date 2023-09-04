@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Course Page for {{ enrollment.course }}</h2>
-
+<h2>{{message}}</h2>
+{% if is_right_student %}
 <div>
   <h3>Course Information</h3>
   <ul>
@@ -32,4 +32,4 @@
   </ul>
 </div>
 
-{% endblock %}
+{% else %} {% endif %} {% endblock %}

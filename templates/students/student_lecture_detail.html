@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Lecture Page for {{lecture}}</h2>
-
+<h2>{{message}}</h2>
+{% if is_right_student %}
 <div>
   <h3>Lecture Information</h3>
   <ul>
@@ -15,10 +15,21 @@
 </div>
 
 <div>
+  <h3>Videos</h3>
+  <ul>
+    {% for video in lecture.vimeovideo_set.all %}
+    <li>
+      <a href="#">{{video.title}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div>
   <h3>Links</h3>
   <ul>
     <li>
-      <a href="{% url 'student_course_detail' enrollment.id %}"
+      <a href="{% url 'student_course_detail' enrollment_id %}"
         >Back to Course Page</a
       >
     </li>
@@ -26,4 +37,4 @@
   </ul>
 </div>
 
-{% endblock %}
+{% else %} {% endif %} {% endblock %}

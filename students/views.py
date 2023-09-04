@@ -8,6 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CreateEnrollmentForm
+from django.contrib.auth.decorators import login_required
 
 class AllCourseList(LoginRequiredMixin, ListView):
     model = Course
@@ -47,6 +48,12 @@ class StudentCourseList(LoginRequiredMixin, ListView):
         return Enrollment.objects.filter(student=self.request.user)
 
 
+
+###########################################
+#### student course detail
+###########################################
+
+# CBV
 class StudentCourseDetail(LoginRequiredMixin, DetailView):
     model = Enrollment
     template_name = 'students/student_course_detail.html'
@@ -55,7 +62,33 @@ class StudentCourseDetail(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         return Enrollment.objects.filter(student=self.request.user)
     
+# FBV
+@login_required
+def student_course_detail(request, enrollment_id):
 
+    template = 'students/student_course_detail.html'
+    enrollment = Enrollment.objects.get(pk=enrollment_id)
+
+    if request.user != enrollment.student:
+        is_right_student = False
+        message = "Warning: You are not permitted to view this page!"
+    else:
+        is_right_student = True
+        message = f"Course detail page of {enrollment.course}"
+
+    context = {
+        "is_right_student": is_right_student,
+        "message": message,
+        "enrollment": enrollment
+    }
+    return render(request, template, context)
+
+
+###########################################
+#### student lecture detail
+###########################################
+
+# CBV
 class StudentLectureDetail(LoginRequiredMixin, DetailView):
     model = Enrollment
     template_name = 'students/student_lecture_detail.html'
@@ -70,6 +103,36 @@ class StudentLectureDetail(LoginRequiredMixin, DetailView):
             context['lecture'] = Lecture.objects.get(pk=self.kwargs['lecture_id'])
         return context
     
+
+# FBV
+@login_required
+def student_lecture_detail(request, enrollment_id, lecture_id):
+
+    template = 'students/student_lecture_detail.html'
+    enrollment = Enrollment.objects.get(pk=enrollment_id)
+    lecture = Lecture.objects.get(pk=lecture_id)
+
+    if request.user != enrollment.student:
+        is_right_student = False
+        message = "Warning: You are not permitted to view this page!"
+    else:
+        is_right_student = True
+        message = f"Lecture detail page of {lecture}"
+
+    context = {
+        "is_right_student": is_right_student,
+        "message": message,
+        "lecture": lecture,
+        "enrollment_id": enrollment.id
+    }
+    return render(request, template, context)
+
+
+
+
+
+
+
 class PublicLecture(LoginRequiredMixin, DetailView):
     model = Lecture
     template_name = 'students/public_lecture.html'
@@ -77,3 +140,11 @@ class PublicLecture(LoginRequiredMixin, DetailView):
 
     def get_queryset(self):
         return Lecture.objects.filter(is_public=True)
+    
+
+
+
+@login_required
+def student_video_detail(request,enrollment_id, video_id):
+
+    enrollment = Enrollment.objects.get(pk=enrollment_id)
