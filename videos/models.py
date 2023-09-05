@@ -12,12 +12,16 @@ class VimeoVideo(models.Model):
     uploader = models.ForeignKey(
         MyUser,
         verbose_name='Uploader',
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
     lecture = models.ForeignKey(
         Lecture,
         verbose_name='Lecture',
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
     title = models.CharField(
         max_length=200,
