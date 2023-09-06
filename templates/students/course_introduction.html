@@ -1,8 +1,9 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Course Information of {{ course.get_long_title }}</h2>
+<h2>Introduction to {{ course.get_long_title }}</h2>
 
 <div>
+  <h3>Course Information</h3>
   <ul>
     <li>Title: {{ course.get_long_title }}</li>
     <li>Subject: {{ course.subject }}</li>
@@ -28,8 +29,11 @@
 <div>
   <h3>Links</h3>
   <ul>
-    <li><a href="{% url 'register_course' course.id %}">Register Course</a></li>
-    <li><a href="{% url 'all_course_list' %}">All Courses List</a></li>
+    <li>
+      <a href="{% url 'register_course' course.id %}">Register This Course</a>
+    </li>
+    <li><a href="{% url 'student_course_list' %}">My Courses</a></li>
+    <li><a href="{% url 'all_course_list' %}">List of All Courses</a></li>
   </ul>
 </div>
 

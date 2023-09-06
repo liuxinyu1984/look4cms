@@ -3,7 +3,10 @@
 <h2>Registration</h2>
 
 <div>
-  <h3>Are you sure to register the course {{ course.get_long_title }}</h3>
+  <h3>
+    Do you want to register the course {{ course.get_long_title }}? Click
+    "Register" button to register.
+  </h3>
   <form method="post">
     {% csrf_token %} {{ form.as_p }}
     <input type="submit" value="Register" />
@@ -12,7 +15,15 @@
 
 <div>
   <h3>Links</h3>
-  <a href="{% url 'course_introduction' course.id %}">Course Introduction</a>
+  <ul>
+    <li>
+      <a href="{% url 'course_introduction' course.id %}"
+        >Back to Course Introduction</a
+      >
+    </li>
+    <li><a href="{% url 'all_course_list' %}">List of All Courses</a></li>
+    <li><a href="{% url 'student_course_list' %}">My Courses</a></li>
+  </ul>
 </div>
 
 {% endblock %}

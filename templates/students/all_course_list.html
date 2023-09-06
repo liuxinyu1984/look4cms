@@ -1,8 +1,10 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>List of all courses</h2>
+<h2>All Courses</h2>
 
 <div>
+  <h3>List of available courses</h3>
+  <p>View course introduction, or register a course.</p>
   <ul>
     {% for course in course_list %}
     <li>
@@ -10,9 +12,17 @@
       <a href="{% url 'course_introduction' course.id %}"
         >Course Introduction</a
       >
-      <a href="{% url 'register_course' course.id %}">Register Course</a>
+      <a href="{% url 'register_course' course.id %}">Register This Course</a>
     </li>
     {% endfor %}
+  </ul>
+</div>
+
+<div>
+  <h3>Links</h3>
+  <ul>
+    <li><a href="{% url 'user_home' %}">Homepage</a></li>
+    <li><a href="{% url 'student_course_list' %}">My Courses</a></li>
   </ul>
 </div>
 

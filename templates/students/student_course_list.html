@@ -1,8 +1,9 @@
 {% extends 'base.html' %} {% block content %}
 
-<h2>Registered Courses</h2>
+<h2>My Courses</h2>
 
 <div>
+  <h3>Registered Courses</h3>
   <ul>
     {% for enrollment in enrollment_list %}
     <li>
@@ -18,8 +19,8 @@
 <div>
   <h3>Links</h3>
   <ul>
-    <li><a href="{% url 'user_home' %}">Personal Homepage</a></li>
-    <li><a href="{% url 'all_course_list' %}">All Courses List</a></li>
+    <li><a href="{% url 'user_home' %}">Homepage</a></li>
+    <li><a href="{% url 'all_course_list' %}">List of All Courses</a></li>
   </ul>
 </div>
 
