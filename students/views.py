@@ -113,7 +113,11 @@ def student_lecture_detail(request, enrollment_id, lecture_id):
 
     template = 'students/student_lecture_detail.html'
     enrollment = Enrollment.objects.get(pk=enrollment_id)
-    lecture = Lecture.objects.get(pk=lecture_id)
+    is_activated = enrollment.activated
+    if is_activated:
+        lecture = Lecture.objects.get(pk=lecture_id)
+    else:
+        lecture = None
 
     if request.user != enrollment.student:
         is_right_student = False
@@ -127,7 +131,8 @@ def student_lecture_detail(request, enrollment_id, lecture_id):
         "is_right_student": is_right_student,
         "message": message,
         "lecture": lecture,
-        "enrollment_id": enrollment.id
+        "enrollment_id": enrollment.id,
+        "is_activated": is_activated
     }
     return render(request, template, context)
 
@@ -149,34 +154,50 @@ class PublicLecture(LoginRequiredMixin, DetailView):
 
 
 @login_required
-def student_video_detail(request,enrollment_id, video_id):
+def student_video_detail(request, enrollment_id, video_id):
 
     template = 'students/student_video_detail.html'
     enrollment = Enrollment.objects.get(pk=enrollment_id)
+    is_activated = enrollment.activated
     video = VimeoVideo.objects.get(pk=video_id)
+
 
     if request.user != enrollment.student:
         is_right_student = False
         message = "Warning: You are not permitted to view this page!"
+        context = {
+            "is_right_student": is_right_student,
+            "message": message
+        }
     else:
         is_right_student = True
         message = f"Video page of {video}"
 
-    client = vimeo.VimeoClient(
-        token=personal_access_token,
-        key=client_identifier,
-        secret=client_secret
-    )
+        if is_activated:
+            client = vimeo.VimeoClient(
+                token=personal_access_token,
+                key=client_identifier,
+                secret=client_secret
+            )
 
-    uri =  video.uri
+            uri =  video.uri
 
-    response = client.get(uri)
-    response_json = response.json()
-    context = {
-        "is_right_student": is_right_student,
-        "message": message,
-        "lecture_id": video.lecture.id,
-        "enrollment_id": enrollment.id,
-        "player_embed_url": response_json["player_embed_url"]
-    }
+            response = client.get(uri)
+            response_json = response.json()
+            context = {
+                "is_right_student": is_right_student,
+                "is_activated": is_activated,
+                "message": message,
+                "lecture_id": video.lecture.id,
+                "enrollment_id": enrollment.id,
+                "player_embed_url": response_json["player_embed_url"]
+            }
+        else:
+            context = {
+                "is_right_student": is_right_student,
+                "is_activated": is_activated,
+                "message": message,
+                "lecture_id": video.lecture.id,
+                "enrollment_id": enrollment.id,
+            }
     return render(request, template, context)

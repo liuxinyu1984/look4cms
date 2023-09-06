@@ -10,7 +10,7 @@
     <li>Activated: {{enrollment.activated}}</li>
   </ul>
 </div>
-
+{% if enrollment.activated %}
 <div>
   <h3>Lectures of the course</h3>
   <ul>
@@ -24,6 +24,12 @@
     {% endfor %}
   </ul>
 </div>
+{% else %}
+<h2>
+  Warning: Your enrollment has not been activated. Contact service to activate
+  your course.
+</h2>
+{% endif %}
 
 <div>
   <h3>Links</h3>

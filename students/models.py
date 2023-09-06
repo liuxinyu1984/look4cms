@@ -24,7 +24,7 @@ class Enrollment(models.Model):
     )
     activated = models.BooleanField(
         default=False,
-        verbose_name='Activated (缴费后由管理员设定)'
+        verbose_name='Activated by Administration'
     )
     dropped = models.BooleanField(
         default=False,

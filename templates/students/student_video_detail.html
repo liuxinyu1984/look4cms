@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
 <h2>{{message}}</h2>
-{% if is_right_student %}
+{% if is_right_student %} {% if is_activated %}
 <div>
   <h3>{{video.title}}</h3>
 </div>
@@ -19,6 +19,13 @@
     ></iframe>
   </div>
 </div>
+
+{% else %}
+<h2>
+  Warning: Your enrollment has not been activated yet! Contact service to
+  activate your course.
+</h2>
+{% endif %}
 
 <div>
   <h3>Links</h3>
