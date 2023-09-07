@@ -153,3 +153,7 @@ EMBED_VIDEO_BACKENDS = (
     'embed_video.backends.SoundCloudBackend',
     'my_app.backends.CustomBackend',
 )
+
+# media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
