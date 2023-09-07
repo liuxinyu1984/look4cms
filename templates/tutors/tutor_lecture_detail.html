@@ -18,22 +18,37 @@
 </div>
 
 <div>
+  <h3>Lecture Notes</h3>
+  <ul>
+    {% for note in lecture.notes_set.all %}
+    <li>
+      <a href="{{note.document.url}}" download="{{note.document.url}}"
+        >{{note.title}}</a
+      >
+      <a href="{% url 'tutor_delete_note' note.id %}">Delete this note</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <h4>Manage Notes</h4>
+  <p>
+    <a href="{% url 'tutor_create_note' lecture.id %}">Upload a New Notes</a>
+  </p>
+</div>
+
+<div>
   <h3>Videos</h3>
   <ul>
     {% for video in lecture.vimeovideo_set.all %}
     <li>
       <a href="{% url 'tutor_video_detail' video.id %}">{{video.title}}</a>
+      <a href="{% url 'tutor_delete_video' video.id %}">Delete this video</a>
     </li>
     {% endfor %}
   </ul>
   <h4>Manage Videos</h4>
-  <p><a href="#">Upload a New Video</a></p>
-</div>
-
-<div>
-  <h3>Notes</h3>
-  <h4>Manage Notes</h4>
-  <p><a href="#">Upload a New Notes</a></p>
+  <p>
+    <a href="{% url 'tutor_create_video' lecture.id %}">Upload a New Video</a>
+  </p>
 </div>
 
 <div>

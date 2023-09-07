@@ -184,7 +184,7 @@ def tutor_create_video(request, lecture_id):
             response = client.get(uri + '?fields=transcode.status').json()
             if response['transcode']['status'] == 'error':
                 message = 'Upload Error! Try upload video again. Make sure your file path is correct.'
-                return render(request, 'videos/upload_error.html', {"message": message})
+                return render(request, 'videos/video_upload_error.html', {"message": message, "lecture_id": lecture.pk})
             else:
                 message = 'Upload Successful! Your video is being transcoded.'
                 vimeo_video = VimeoVideo(
@@ -195,7 +195,7 @@ def tutor_create_video(request, lecture_id):
                 )
                 vimeo_video.save()
 
-                return render(request, 'videos/upload_success.html', {"message": message})
+                return render(request, 'videos/video_upload_success.html', {"message": message, "lecture_id": lecture.pk})
             
     context = {
         "form": video_form,

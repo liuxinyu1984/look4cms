@@ -3,7 +3,7 @@
 <h2>{{ message }}</h2>
 
 <div>
-  <a href="#">Go back to lecture</a>
+  <a href="{% url 'tutor_lecture_detail' lecture_id %}">Go back to lecture</a>
 </div>
 
 {% endblock %}

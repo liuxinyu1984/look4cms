@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% load embed_video_tags %} {% block content %}
+
+<h2>Displaying Single Note</h2>
+<p>
+  Download lecture notes:
+  <a href="{{note.document.url}}" download="{{note.document.url}}"
+    >{{note.title}}</a
+  >
+</p>
+{% endblock %}

@@ -15,6 +15,19 @@
 </div>
 
 <div>
+  <h3>Lecture Notes</h3>
+  <ul>
+    {% for note in lecture.notes_set.all %}
+    <li>
+      <a href="{{note.document.url}}" download="{{note.document.url}}"
+        >{{note.title}}</a
+      >
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div>
   <h3>Videos</h3>
   <ul>
     {% for video in lecture.vimeovideo_set.all %}

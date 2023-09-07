@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+
+<h2>{{ message }}</h2>
+
+<div>
+  <a href="{% url 'tutor_create_video' lecture_id %}">Re-upload the video</a>
+  <a href="{% url 'tutor_lecture_detail' lecture_id %}">Go back to lecture</a>
+</div>
+
+{% endblock %}

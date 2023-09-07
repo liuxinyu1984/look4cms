@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'embed_video',
     'embeds',
     'videos',
+    'notes',
 ]
 
 MIDDLEWARE = [
