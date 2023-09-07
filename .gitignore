@@ -39,3 +39,6 @@ Thumbs.db
 
 # virtual environment
 env/
+
+# media folder
+uploads/
