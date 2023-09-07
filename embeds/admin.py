@@ -9,4 +9,4 @@ class EmbedVideoAdmin(AdminVideoMixin, admin.ModelAdmin):
     search_fields = ['uploader','lecture']
 
 
-admin.site.register(EmbedVideo, EmbedVideoAdmin)
+# admin.site.register(EmbedVideo, EmbedVideoAdmin)
