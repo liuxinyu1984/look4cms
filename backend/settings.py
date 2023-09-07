@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'embeds',
     'videos',
     'notes',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
