@@ -42,3 +42,6 @@ env/
 
 # media folder
 uploads/
+
+# environment variables
+.env
