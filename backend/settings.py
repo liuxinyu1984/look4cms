@@ -163,3 +163,8 @@ EMBED_VIDEO_BACKENDS = (
 # media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+
+# max number of visit times
+MAX_WATCH = int(os.environ.get("MAX_WATCH"))
+#print("Max number of times that student can visit video page is %d" % MAX_WATCH)

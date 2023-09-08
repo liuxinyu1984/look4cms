@@ -12,6 +12,7 @@ from .forms import CreateEnrollmentForm
 from django.contrib.auth.decorators import login_required
 import vimeo, requests, json
 from videos.vimeo_key import *
+from backend.settings import MAX_WATCH
 
 class AllCourseList(LoginRequiredMixin, ListView):
     model = Course
@@ -214,3 +215,9 @@ def student_video_detail(request, enrollment_id, video_id):
                 "enrollment_id": enrollment.id,
             }
     return render(request, template, context)
+
+
+
+from django.http import HttpResponse
+def test_max_watch(request):
+    return HttpResponse("Max watch number is %d" % MAX_WATCH)

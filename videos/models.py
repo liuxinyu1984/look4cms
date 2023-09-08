@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import MyUser
 from courses.models import Lecture
+from backend.settings import MAX_WATCH
 
 class VimeoVideo(models.Model):
     uri = models.CharField(
@@ -35,6 +36,11 @@ class VimeoVideo(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True,
         verbose_name='Update Time'
+    )
+    max_num_watch = models.PositiveIntegerField(
+        default=MAX_WATCH,
+        verbose_name='Watching Limit',
+        help_text='Max number of times that a student can watch this video'
     )
 
     def __str__(self):
