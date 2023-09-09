@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import AllCourseList, CourseIntroduction, RegisterCourse, StudentCourseList, StudentCourseDetail, StudentLectureDetail, PublicLecture
-from .views import student_course_detail, student_lecture_detail, student_video_detail, test_max_watch
+from .views import student_course_detail, student_lecture_detail, student_video_detail
 
 urlpatterns = [
     path('all_course_list', AllCourseList.as_view(), name='all_course_list'),
@@ -15,6 +15,6 @@ urlpatterns = [
 ]
 
 # test MAX_WATCH value
-urlpatterns += [
-    path('test_max_watch', test_max_watch)
-]
+# urlpatterns += [
+#     path('test_max_watch', test_max_watch)
+# ]

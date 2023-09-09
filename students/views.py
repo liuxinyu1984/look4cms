@@ -162,6 +162,20 @@ class PublicLecture(LoginRequiredMixin, DetailView):
         return Lecture.objects.filter(is_public=True)
     
 
+###################################################################
+## helper function: send request to vimeo, get player_embed_url
+# arg: uri---uri field value from a video object
+# return value: (type string) response_json["player_embed_url"]
+###################################################################
+def player_embed_url(uri):
+    client = vimeo.VimeoClient(
+                token=personal_access_token,
+                key=client_identifier,
+                secret=client_secret
+            )
+    response = client.get(uri)
+    response_json = response.json()
+    return response_json["player_embed_url"]
 
 
 @login_required
@@ -170,7 +184,12 @@ def student_video_detail(request, enrollment_id, video_id):
     template = 'students/student_video_detail.html'
     enrollment = Enrollment.objects.get(pk=enrollment_id)
     is_activated = enrollment.activated
+    nums_watched_dict = enrollment.nums_watched
+
     video = VimeoVideo.objects.get(pk=video_id)
+    max_watch = video.max_num_watch
+    uri = video.uri
+    key = "video_%d" % video.pk
 
     if video.lecture.course != enrollment.course:
         return redirect('student_course_detail', enrollment_id)
@@ -188,24 +207,35 @@ def student_video_detail(request, enrollment_id, video_id):
         message = f"Video page of {video}"
 
         if is_activated:
-            client = vimeo.VimeoClient(
-                token=personal_access_token,
-                key=client_identifier,
-                secret=client_secret
-            )
+            if key not in nums_watched_dict:
+                new_pair = {key:1}
+                nums_watched_dict.update(new_pair)
+                enrollment.nums_watched = nums_watched_dict
+                enrollment.save(update_fields=["nums_watched"])
 
-            uri =  video.uri
+                context = {
+                    "is_right_student": is_right_student,
+                    "is_activated": is_activated,
+                    "message": message,
+                    "lecture_id": video.lecture.id,
+                    "enrollment_id": enrollment.id,
+                    "player_embed_url": player_embed_url(uri),
+                    "visit_times": enrollment.nums_watched[key]
+                }
+            else:
+                nums_watched_dict[key] +=1
+                enrollment.nums_watched = nums_watched_dict
+                enrollment.save(update_fields=["nums_watched"])
 
-            response = client.get(uri)
-            response_json = response.json()
-            context = {
-                "is_right_student": is_right_student,
-                "is_activated": is_activated,
-                "message": message,
-                "lecture_id": video.lecture.id,
-                "enrollment_id": enrollment.id,
-                "player_embed_url": response_json["player_embed_url"]
-            }
+                context = {
+                    "is_right_student": is_right_student,
+                    "is_activated": is_activated,
+                    "message": message,
+                    "lecture_id": video.lecture.id,
+                    "enrollment_id": enrollment.id,
+                    "player_embed_url": player_embed_url(uri),
+                    "visit_times": enrollment.nums_watched[key]
+                }
         else:
             context = {
                 "is_right_student": is_right_student,
@@ -217,7 +247,7 @@ def student_video_detail(request, enrollment_id, video_id):
     return render(request, template, context)
 
 
-
-from django.http import HttpResponse
-def test_max_watch(request):
-    return HttpResponse("Max watch number is %d" % MAX_WATCH)
+# test MAX_WATCH value
+# from django.http import HttpResponse
+# def test_max_watch(request):
+#     return HttpResponse("Max watch number is %d" % MAX_WATCH)

@@ -30,6 +30,11 @@ class Enrollment(models.Model):
         default=False,
         verbose_name='Course Dropped by Student'
     )
+    nums_watched = models.JSONField(
+        default=dict,
+        verbose_name='Times Watched',
+        help_text='Dictionary of times of watching on each video'
+    )
 
     def __str__(self):
         return str(self.course) + " by " + str(self.student)
