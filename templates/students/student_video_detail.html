@@ -6,7 +6,7 @@
   <h3>{{video.title}}</h3>
   <p>You have visited this page {{visit_times}} times.</p>
 </div>
-
+{% if limit_exceeded %} {% else %}
 <div>
   <h3>Display by player_embed_url</h3>
   {{player_embed_url}}
@@ -20,8 +20,7 @@
     ></iframe>
   </div>
 </div>
-
-{% else %}
+{% endif %} {% else %}
 <h2>
   Warning: Your enrollment has not been activated yet! Contact service to
   activate your course.

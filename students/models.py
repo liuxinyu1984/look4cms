@@ -3,6 +3,13 @@ from users.models import MyUser
 from courses.models import Course
 from django.urls import reverse
 
+###############
+## callable function to set default value to JSON field
+
+def json_default_dict():
+    return {"video_video.pk":"nums_of_visit_to_video"}
+
+
 class Enrollment(models.Model):
     student = models.ForeignKey(
         MyUser,
@@ -31,7 +38,7 @@ class Enrollment(models.Model):
         verbose_name='Course Dropped by Student'
     )
     nums_watched = models.JSONField(
-        default=dict,
+        default=json_default_dict,
         verbose_name='Times Watched',
         help_text='Dictionary of times of watching on each video'
     )

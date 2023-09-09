@@ -223,19 +223,32 @@ def student_video_detail(request, enrollment_id, video_id):
                     "visit_times": enrollment.nums_watched[key]
                 }
             else:
-                nums_watched_dict[key] +=1
-                enrollment.nums_watched = nums_watched_dict
-                enrollment.save(update_fields=["nums_watched"])
+                if nums_watched_dict[key] >= video.max_num_watch:
+                    message = f"You have watched this video times {video.max_num_watch}"
+                    context = {
+                        "is_right_student": is_right_student,
+                        "is_activated": is_activated,
+                        "message": message,
+                        "lecture_id": video.lecture.id,
+                        "enrollment_id": enrollment.id,
+                        "visit_times": enrollment.nums_watched[key],
+                        "limit_exceeded": True
+                    }
+                else:
+                    nums_watched_dict[key] +=1
+                    enrollment.nums_watched = nums_watched_dict
+                    enrollment.save(update_fields=["nums_watched"])
 
-                context = {
-                    "is_right_student": is_right_student,
-                    "is_activated": is_activated,
-                    "message": message,
-                    "lecture_id": video.lecture.id,
-                    "enrollment_id": enrollment.id,
-                    "player_embed_url": player_embed_url(uri),
-                    "visit_times": enrollment.nums_watched[key]
-                }
+                    context = {
+                        "is_right_student": is_right_student,
+                        "is_activated": is_activated,
+                        "message": message,
+                        "lecture_id": video.lecture.id,
+                        "enrollment_id": enrollment.id,
+                        "player_embed_url": player_embed_url(uri),
+                        "visit_times": enrollment.nums_watched[key],
+                        "limit_exceeded": False
+                    }
         else:
             context = {
                 "is_right_student": is_right_student,
