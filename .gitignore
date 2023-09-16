@@ -45,3 +45,6 @@ uploads/
 
 # environment variables
 .env
+
+# test account info
+superuser_account.txt
