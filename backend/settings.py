@@ -172,6 +172,12 @@ EMBED_VIDEO_BACKENDS = (
 )
 
 
+# vimeo keys
+VIMEO_CLIENT_IDENTIFIER = os.environ.get('VIMEO_CLIENT_IDENTIFIER')
+VIMEO_PERSONAL_ACCESS_TOKEN = os.environ.get('VIMEO_PERSONAL_ACCESS_TOKEN')
+VIMEO_CLIENT_SECRET = os.environ.get('VIMEO_CLIENT_SECRET')
+VIMEO_USER_ID = os.environ.get('VIMEO_USER_ID')
+uri_user = 'https://api.vimeo.com/users/' + VIMEO_USER_ID
 
 
 # max number of visit times

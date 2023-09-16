@@ -11,8 +11,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CreateEnrollmentForm
 from django.contrib.auth.decorators import login_required
 import vimeo, requests, json
-from videos.vimeo_key import *
+#from videos.vimeo_key import *
 from backend.settings import MAX_WATCH
+from backend.settings import VIMEO_CLIENT_IDENTIFIER, VIMEO_PERSONAL_ACCESS_TOKEN, VIMEO_CLIENT_SECRET, VIMEO_USER_ID, uri_user
 
 class AllCourseList(LoginRequiredMixin, ListView):
     model = Course
@@ -169,9 +170,9 @@ class PublicLecture(LoginRequiredMixin, DetailView):
 ###################################################################
 def player_embed_url(uri):
     client = vimeo.VimeoClient(
-                token=personal_access_token,
-                key=client_identifier,
-                secret=client_secret
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
             )
     response = client.get(uri)
     response_json = response.json()

@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import VimeoVideo
 import vimeo, requests, json
-from .vimeo_key import *
+#from .vimeo_key import *
+from backend.settings import VIMEO_CLIENT_IDENTIFIER, VIMEO_PERSONAL_ACCESS_TOKEN, VIMEO_CLIENT_SECRET, VIMEO_USER_ID, uri_user
 from users.models import MyUser
 from courses.models import Lecture
 from .forms import CreateVimeoVideoForm, VideoFilePathForm
@@ -12,9 +13,9 @@ def display_single_video(request):
     video = VimeoVideo.objects.get(pk=6)
 
     client = vimeo.VimeoClient(
-        token=personal_access_token,
-        key=client_identifier,
-        secret=client_secret
+        token=VIMEO_PERSONAL_ACCESS_TOKEN,
+        key=VIMEO_CLIENT_IDENTIFIER,
+        secret=VIMEO_CLIENT_SECRET
     )
 
     uri =  video.uri
@@ -58,9 +59,9 @@ def upload_video(request):
     if request.method == "POST":
         if video_form.is_valid():
             client = vimeo.VimeoClient(
-                token=personal_access_token,
-                key=client_identifier,
-                secret=client_secret
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
             )
 
             file_path = video_form['file_path'].value()
@@ -119,9 +120,9 @@ def tutor_video_detail(request, video_id):
 
     # fetch video uri from Vimeo
     client = vimeo.VimeoClient(
-        token=personal_access_token,
-        key=client_identifier,
-        secret=client_secret
+        token=VIMEO_PERSONAL_ACCESS_TOKEN,
+        key=VIMEO_CLIENT_IDENTIFIER,
+        secret=VIMEO_CLIENT_SECRET
     )
 
     uri =  video.uri
@@ -165,9 +166,9 @@ def tutor_create_video(request, lecture_id):
     if request.method == "POST":
         if video_form.is_valid():
             client = vimeo.VimeoClient(
-                token=personal_access_token,
-                key=client_identifier,
-                secret=client_secret
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
             )
 
             file_path = video_form['file_path'].value()
@@ -228,9 +229,9 @@ def tutor_delete_video(request, video_id):
 
         if request.method == "POST":
             client = vimeo.VimeoClient(
-              token=personal_access_token,
-              key=client_identifier,
-              secret=client_secret
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
             )
             uri = video.uri
             client.delete(uri)
@@ -266,9 +267,9 @@ def tutor_update_video(request, video_id):
     if request.method == "POST":
         if form.is_valid():
             client = vimeo.VimeoClient(
-                token=personal_access_token,
-                key=client_identifier,
-                secret=client_secret
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
             )
 
             file_path = form['file_path'].value()
