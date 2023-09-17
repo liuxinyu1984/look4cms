@@ -209,12 +209,12 @@ if not DEBUG:
     STATICFILES_LOCATION = 'staticfiles'
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
     STATICFILES_STORAGE = 'backend.custom_storage.StaticStorage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATICFILES_LOCATION}/'
+    
     # s3 public media settings
     MEDIAFILES_LOCATION = 'uploads'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'backend.custom_storage.PublicMediaStorage'
-    MEDIA_URL = f'htts://{AWS_S3_CUSTOM_DOMAIN}/{MEDIAFILES_LOCATION}/'
+    
 else:
     # Static files (CSS, JavaScript, Images)
     # https://docs.djangoproject.com/en/4.2/howto/static-files/
