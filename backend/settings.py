@@ -225,3 +225,9 @@ else:
     # media files
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
+
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://web-production-0750.up.railway.app'
+    ]
