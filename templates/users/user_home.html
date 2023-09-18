@@ -4,13 +4,12 @@
 
 <div>
   <ul>
-    <li><a href="#">Dashboard</a></li>
-    <li><a href="{% url 'all_course_list' %}">Registration</a></li>
-    <li><a href="{% url 'student_course_list' %}">My Courses</a></li>
+    <li><a href="{% url 'all_course_list' %}">Registration 选课入口</a></li>
+    <li><a href="{% url 'student_course_list' %}">My Courses 我选的课程</a></li>
     {% if user.is_tutor %}
-    <li><a href="{% url 'tutor_course_list' %}">Tutoring</a></li>
+    <li><a href="{% url 'tutor_course_list' %}">Tutoring 教师教学入口</a></li>
     {% endif %}
-    <li><a href="{% url 'user_profile' %}">Profile</a></li>
+    <li><a href="{% url 'user_profile' %}">Profile 个人账户信息</a></li>
   </ul>
 </div>
 
