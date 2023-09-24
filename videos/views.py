@@ -5,7 +5,7 @@ import vimeo, requests, json
 from backend.settings import VIMEO_CLIENT_IDENTIFIER, VIMEO_PERSONAL_ACCESS_TOKEN, VIMEO_CLIENT_SECRET, VIMEO_USER_ID, uri_user
 from users.models import MyUser
 from courses.models import Lecture
-from .forms import CreateVimeoVideoForm, VideoFilePathForm
+from .forms import CreateVimeoVideoForm, VideoFilePathForm, VideoUploadForm
 from tutors.views import tutor_required
 
 def display_single_video(request):
@@ -294,3 +294,113 @@ def tutor_update_video(request, video_id):
         "form": form
     }
     return render(request, template, context)
+
+
+
+
+
+
+
+
+
+
+#################################################### tutor upload new video
+@tutor_required
+def tutor_upload_video(request, lecture_id):
+    template = 'videos/tutor_upload_video.html'
+    lecture = Lecture.objects.get(pk=lecture_id)
+    uploader = request.user
+
+    if request.user != lecture.course.tutor:
+        message = "Warning: You cannot upload video to this lecture! (Not the instructor)"
+        is_instructor = False
+    else:
+        message = f"Upload video to {lecture}"
+        is_instructor = True
+
+    if request.method == 'POST':
+        form = VideoUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            client = vimeo.VimeoClient(
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
+            )
+
+            file = request.FILES.get('video_file')
+            file_path = file.file.name
+            name = form['title'].value()
+
+            uri = client.upload(
+                file_path,
+                data = {
+                    'name': name
+                }
+            )
+            
+
+            response = client.get(uri + '?fields=transcode.status').json()
+            if response['transcode']['status'] == 'error':
+                message = 'Upload Error! Try upload video again. Make sure your file path is correct.'
+                return render(request, 'videos/video_upload_error.html', {"message": message, "lecture_id": lecture.pk})
+            else:
+                message = 'Upload Successful! Your video is being transcoded.'
+                vimeo_video = VimeoVideo(
+                    uri=uri,
+                    uploader = uploader,
+                    lecture = lecture,
+                    title = name
+                )
+                vimeo_video.save()
+
+                return render(request, 'videos/video_upload_success.html', {"message": message, "lecture_id": lecture.pk})
+    else:
+        form = VideoUploadForm() 
+    context = {
+        "form": form,
+        "message": message,
+        "is_instructor": is_instructor,
+        "lecture": lecture
+    }
+    return render(request, template, context)
+
+
+
+# def test_upload_file(request):
+#     template = 'videos/test_upload_file.html'
+#     if request.method == 'POST':
+#         form = VideoUploadForm(request.POST, request.FILES)
+#         print(request.FILES.get('video_file'))
+#     else:
+#         form = VideoUploadForm()
+#     return render(request, template, {'form': form})
+
+def test_upload_video(request):
+    template = 'videos/test_upload_file.html'
+    if request.method == 'POST':
+        form = VideoUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            client = vimeo.VimeoClient(
+                token=VIMEO_PERSONAL_ACCESS_TOKEN,
+                key=VIMEO_CLIENT_IDENTIFIER,
+                secret=VIMEO_CLIENT_SECRET
+            )
+
+            file = request.FILES.get('video_file')
+            print(file.file.name)
+            name = form['title'].value()
+            print(name)
+
+            uri = client.upload(
+                file.file.name,
+                data = {
+                    'name': name
+                }
+            )
+            
+            response = client.get(uri)
+            print(response.json())
+    else:
+        form = VideoUploadForm()
+
+    return render(request, template, {'form': form})

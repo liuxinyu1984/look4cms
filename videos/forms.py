@@ -27,3 +27,14 @@ class VideoFilePathForm(forms.Form):
         help_text='Title of the video.',
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
+
+
+class VideoUploadForm(forms.Form):
+    video_file = forms.FileField(
+        help_text='Video file on your computer',
+        widget=forms.FileInput
+    )
+    title = forms.CharField(
+        help_text='Title of the video.',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )

@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% load embed_video_tags %} {% block content %}
+
+<h2>Test</h2>
+
+<div>
+  <form method="post" class="form" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }}
+    <input class="btn btn-primary" type="submit" value="Upload Video" />
+  </form>
+</div>
+
+{% endblock %}
